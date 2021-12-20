@@ -9,7 +9,7 @@ public class Game
     JFrame window; 
     Container con ;
     JPanel titleNamePanel, startButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel; 
-    JLabel prompt, healthLabel, healthLabelNumber, weaponLabel, typeWeaponLabel; 
+    JLabel prompt, healthLabel, healthLabelNumber, weaponLabel, typeWeaponLabel, monsterHealthLabel, monsterHealthNumber; 
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 90 ); 
     Font normalFont = new Font("Times New Roman", Font.PLAIN, 30); 
     JButton startButton, choice1, choice2, choice3, choice4; 
@@ -227,6 +227,43 @@ public class Game
         choice4.setText(""); 
 
     }
+
+    public void seekShelter()
+    {
+        position = "shelter"; 
+        mainTextArea.setText("You have sought shelter at a nearby cabin...\nYou here a goblin outside....\n\nWhat do you do?"); 
+        choice1.setText("Fight the goblin");
+        choice2.setText("Run");
+    }
+
+    public void fightGoblin()
+    {
+        /*
+            evertime this method is being called, a new JLabel is being created 
+            to display the monsters health.. I want it so that it only displays one JLabel
+        */ 
+        
+        position = "fightGoblin"; 
+        int goblinHP = 20; 
+        goblinHP = goblinHP - 5; 
+        playerHealth = playerHealth - 2; 
+
+        healthLabelNumber.setText(""+playerHealth); 
+        monsterHealthLabel = new JLabel("Goblin HP");
+        monsterHealthLabel.setForeground(Color.white); 
+        monsterHealthLabel.setFont(normalFont); 
+        playerPanel.add(monsterHealthLabel); 
+
+        monsterHealthNumber = new JLabel(); 
+        monsterHealthLabel.setForeground(Color.white);
+        monsterHealthLabel.setFont(normalFont); 
+        monsterHealthLabel.setText(""+goblinHP); 
+        playerPanel.add(monsterHealthNumber); 
+
+        mainTextArea.setText("You hit the goblin for 5 health...\nThe goblin attacks back dealing 2 damage..\n\nWhat do you do?");
+        choice1.setText("Attack again");
+        choice2.setText("Run");
+    }
     public class TitleScreenHandler implements ActionListener
     {
         public void actionPerformed(ActionEvent event)
@@ -296,8 +333,26 @@ public class Game
                 case "west":
                 switch(choice)
                 {
-                    case "c1": break; 
-                    case "c2": leaveTown();
+                    case "c1": seekShelter(); break; 
+                    case "c2": leaveTown(); break; 
+                }
+                break; 
+
+                //choices for when shelter is selected
+                case "shelter":
+                switch(choice)
+                {
+                    case "c1": fightGoblin(); break; 
+                    case "c2": leaveTown(); break;
+                }
+                break; 
+                
+                //choices for when fighting the goblin
+                case "fightGoblin":
+                switch(choice)
+                {
+                    case "c1": fightGoblin(); break; 
+                    case "c2": leaveTown(); break; 
                 }
             }
 
